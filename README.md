@@ -12,3 +12,9 @@ La página incluye:
 2. **Un texto central** tipo “Lorem ipsum” a modo de contenido de muestra.
 
 3. **Una tabla** con tres columnas (`#`, `Name`, `Description`), pensada para llenar con información adicional.
+
+## Tecnologías utilizadas
+
+- **HTML5**  
+- **Bootstrap 5.3.3**  
+- **CSS** (integrado desde Bootstrap)  
