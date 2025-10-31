@@ -1,0 +1,15 @@
+# Ignorar entorno virtual de Python
+venv/
+.env
+
+# Archivos temporales
+__pycache__/
+*.pyc
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos del editor
+.vscode/
+.idea/

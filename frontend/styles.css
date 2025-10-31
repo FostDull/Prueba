@@ -1,0 +1,65 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+}
+
+.custom-card {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.custom-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background: transparent;
+  border: none;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.profile-img {
+  width: 300px;
+  height: 250px;
+  border-radius: 8px; 
+  object-fit: cover;
+}
+
+
+.card-body {
+  padding: 1rem 1.25rem 1.25rem 1.25rem;
+}
+
+.card-text {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+.btn {
+  border-radius: 50px;
+  font-weight: 500;
+  padding: 0.4rem 1.2rem;
+}
+
+.table {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th {
+  background-color: #3b5998 !important; /* Azul tipo Facebook */
+  color: #fff;
+}
+
+.table td {
+  font-size: 0.95rem;
+}
+
+h4 {
+  color: #1c1e21;
+}
