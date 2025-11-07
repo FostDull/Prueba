@@ -11,7 +11,7 @@
 
   <div class="container mt-5">
 
-    <!-- 🌍 CARDS DE PRESENTACIÓN -->
+
     <div class="row justify-content-center">
       <div class="col-md-6 mb-4">
         <div class="custom-card shadow-sm">
@@ -50,14 +50,13 @@
       </div>
     </div>
 
-    <!-- 📝 TEXTO PRINCIPAL -->
     <div class="mb-4 text-center">
       <h4 class="fw-semibold">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste sunt asperiores omnis magnam ipsam delectus.
       </h4>
     </div>
 
-    <!-- ☁️ FORMULARIO DE CLIMA -->
+
     <div class="row justify-content-center">
       <div class="col-md-6 mb-4">
         <div class="custom-card shadow-sm">
@@ -81,7 +80,7 @@
       </div>
     </div>
 
-    <!-- 🌦️ TABLA DE RESULTADOS -->
+
     <div class="table-responsive mb-5">
       <table class="table table-bordered table-striped text-center align-middle shadow-sm" id="weatherTable">
         <thead class="table-dark">
@@ -101,7 +100,7 @@
 
   </div>
 
-  <!-- 🔧 SCRIPT DE FUNCIONALIDAD -->
+
   <script>
     const form = document.getElementById('weatherForm');
     const resultDiv = document.getElementById('weatherResult');
@@ -113,7 +112,7 @@
       let city = document.getElementById('city').value.trim();
       const country = document.getElementById('country').value.trim();
 
-      // 🔹 Limpiar y validar nombre de ciudad
+
       city = city.replace(/\s+/g, ' ');
       if (!city.match(/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/)) {
         resultDiv.innerHTML = `<div class="alert alert-warning">⚠️ Please enter a valid city name (letters only).</div>`;
