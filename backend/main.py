@@ -34,17 +34,11 @@ def root():
 
 @app.get("/weather/")
 async def get_weather(city: str, country: str = None):
-    """
-    Get the current weather of a city in the world.
-    Example: /weather/?city=Quito&country=EC
-    """
     if not OPENWEATHER_API_KEY:
-        raise HTTPException(status_code=500, detail="API Key is not configured")
+        raise HTTPException(status_code=500, detail="API key not configured")
 
-    # Construct location parameter
     location = f"{city},{country}" if country else city
 
-    # Call external API
     async with httpx.AsyncClient() as client:
         response = await client.get(BASE_URL, params={
             "q": location,
@@ -53,10 +47,17 @@ async def get_weather(city: str, country: str = None):
             "lang": "en"
         })
 
-    if response.status_code != 200:
+    # Validar respuesta
+    if response.status_code == 404:
+        raise HTTPException(status_code=404, detail=f"City '{city}' not found.")
+    elif response.status_code != 200:
         raise HTTPException(status_code=response.status_code, detail=response.json())
 
     data = response.json()
+
+    # Validar que el resultado sea efectivamente una ciudad
+    if "name" not in data or not data["name"]:
+        raise HTTPException(status_code=404, detail="Invalid location. Please enter a valid city name.")
 
     return {
         "city": data["name"],
@@ -64,6 +65,6 @@ async def get_weather(city: str, country: str = None):
         "temperature": f"{data['main']['temp']} °C",
         "description": data["weather"][0]["description"],
         "humidity": f"{data['main']['humidity']}%",
-        "wind_speed": f"{data['wind']['speed']} m/s",
+        "wind": f"{data['wind']['speed']} m/s",
         "icon": f"https://openweathermap.org/img/wn/{data['weather'][0]['icon']}@2x.png"
     }

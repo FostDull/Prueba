@@ -11,7 +11,7 @@
 
   <div class="container mt-5">
 
-    <!-- Cards -->
+    <!-- 🌍 CARDS DE PRESENTACIÓN -->
     <div class="row justify-content-center">
       <div class="col-md-6 mb-4">
         <div class="custom-card shadow-sm">
@@ -50,12 +50,14 @@
       </div>
     </div>
 
-    <!-- Text -->
-    <div class="mb-4">
-      <h4 class="fw-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste sunt asperiores omnis magnam ipsam delectus.</h4>
+    <!-- 📝 TEXTO PRINCIPAL -->
+    <div class="mb-4 text-center">
+      <h4 class="fw-semibold">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste sunt asperiores omnis magnam ipsam delectus.
+      </h4>
     </div>
 
-    <!-- Weather Query Card -->
+    <!-- ☁️ FORMULARIO DE CLIMA -->
     <div class="row justify-content-center">
       <div class="col-md-6 mb-4">
         <div class="custom-card shadow-sm">
@@ -79,7 +81,7 @@
       </div>
     </div>
 
-    <!-- Weather Table -->
+    <!-- 🌦️ TABLA DE RESULTADOS -->
     <div class="table-responsive mb-5">
       <table class="table table-bordered table-striped text-center align-middle shadow-sm" id="weatherTable">
         <thead class="table-dark">
@@ -99,6 +101,7 @@
 
   </div>
 
+  <!-- 🔧 SCRIPT DE FUNCIONALIDAD -->
   <script>
     const form = document.getElementById('weatherForm');
     const resultDiv = document.getElementById('weatherResult');
@@ -107,23 +110,32 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const city = document.getElementById('city').value.trim();
+      let city = document.getElementById('city').value.trim();
       const country = document.getElementById('country').value.trim();
 
+      // 🔹 Limpiar y validar nombre de ciudad
+      city = city.replace(/\s+/g, ' ');
+      if (!city.match(/^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/)) {
+        resultDiv.innerHTML = `<div class="alert alert-warning">⚠️ Please enter a valid city name (letters only).</div>`;
+        return;
+      }
+
       try {
-        const res = await fetch(`http://127.0.0.1:8080/weather/?city=${city}&country=${country}`);
-        if (!res.ok) throw new Error('Failed to fetch weather data');
+        const res = await fetch(`http://127.0.0.1:8080/weather/?city=${encodeURIComponent(city)}&country=${country}`);
         const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.detail || 'City not found or API error');
+        }
 
         resultDiv.innerHTML = `
           <div class="alert alert-info">
             <strong>${data.city}, ${data.country}</strong><br>
             🌡️ ${data.temperature} — ${data.description}<br>
-            💧 Humidity: ${data.humidity} | 💨 Wind: ${data.wind_speed}
+            💧 Humidity: ${data.humidity} | 💨 Wind: ${data.wind}
           </div>
         `;
 
-        // Insert row in the table
         const row = `
           <tr>
             <td>${counter++}</td>
@@ -132,7 +144,7 @@
             <td>${data.temperature}</td>
             <td>${data.description}</td>
             <td>${data.humidity}</td>
-            <td>${data.wind_speed}</td>
+            <td>${data.wind}</td>
           </tr>`;
         tableBody.insertAdjacentHTML('beforeend', row);
 
