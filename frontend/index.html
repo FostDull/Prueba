@@ -120,7 +120,7 @@
       }
 
       try {
-        const res = await fetch(`http://127.0.0.1:8080/weather/?city=${encodeURIComponent(city)}&country=${country}`);
+        const res = await fetch(`http://44.223.11.84:8080/weather/?city=${encodeURIComponent(city)}&country=${country}`);
         const data = await res.json();
 
         if (!res.ok) {
