@@ -63,3 +63,21 @@ body {
 h4 {
   color: #1c1e21;
 }
+
+.profile-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.custom-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
+.custom-card {
+  border-radius: 14px;
+  background: white;
+}
