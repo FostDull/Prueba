@@ -6,7 +6,7 @@ import httpx
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load .env variables
 load_dotenv()
 
 app = FastAPI(
@@ -15,10 +15,12 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Allow requests from frontend
+# ==============================
+# 🔹 CORS (Frontend puede llamar API)
+# ==============================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cambia esto a tu dominio en producción
+    allow_origins=["*"],  # Cambiar a dominio en producción
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,22 +29,27 @@ app.add_middleware(
 # ==============================
 # 🔹 SERVE FRONTEND
 # ==============================
-frontend_path = os.path.join(os.path.dirname(__file__), "../frontend")
 
-# Servir archivos estáticos (CSS, imágenes, JS)
-app.mount("/static", StaticFiles(directory=os.path.join(frontend_path, "static")), name="static")
-app.mount("/img", StaticFiles(directory=os.path.join(frontend_path, "img")), name="img")
+# Detecta ruta absoluta del proyecto
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(BASE_DIR, "../frontend")
 
+# Static files
+app.mount("/static", StaticFiles(directory=os.path.join(FRONTEND_DIR, "static")), name="static")
+app.mount("/img", StaticFiles(directory=os.path.join(FRONTEND_DIR, "img")), name="img")
+
+# Route: /
 @app.get("/")
-async def serve_index():
-    index_file = os.path.join(frontend_path, "index.html")
-    if os.path.exists(index_file):
-        return FileResponse(index_file)
-    return {"message": "Frontend not found"}
+def index():
+    index_html = os.path.join(FRONTEND_DIR, "index.html")
+    if os.path.exists(index_html):
+        return FileResponse(index_html)
+    return {"error": "index.html not found in frontend folder"}
 
 # ==============================
 # 🔹 WEATHER API
 # ==============================
+
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY")
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
 
@@ -68,14 +75,11 @@ async def get_weather(city: str, country: str = None):
 
     data = response.json()
 
-    if "name" not in data or not data["name"]:
-        raise HTTPException(status_code=404, detail="Invalid location. Please enter a valid city name.")
-
     return {
-        "city": data["name"],
-        "country": data["sys"]["country"],
+        "city": data.get("name"),
+        "country": data["sys"].get("country"),
         "temperature": f"{data['main']['temp']} °C",
-        "description": data["weather"][0]["description"],
+        "description": data["weather"][0].get("description"),
         "humidity": f"{data['main']['humidity']}%",
         "wind": f"{data['wind']['speed']} m/s",
         "icon": f"https://openweathermap.org/img/wn/{data['weather'][0]['icon']}@2x.png"
